@@ -1,0 +1,29 @@
+{
+  "name": "iosdc-2026-carplay-pamphlet",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare:manuscript": "node ./scripts/prepare-manuscript.mjs",
+    "prepreview": "npm run prepare:manuscript",
+    "preview": "vivliostyle preview",
+    "prebuild": "npm run prepare:manuscript",
+    "build": "vivliostyle build",
+    "prepress": "npm run prepare:manuscript",
+    "press": "bash ./scripts/run-press.sh",
+    "prepress-local": "npm run prepare:manuscript",
+    "press-local": "bash ./scripts/run-press-local.sh",
+    "check": "bash ./scripts/check-pdf.sh",
+    "lint": "textlint \"./manuscript/**/*.md\""
+  },
+  "devDependencies": {
+    "press-ready": "4.0.3",
+    "textlint": "15.7.1",
+    "textlint-filter-rule-comments": "1.3.0",
+    "textlint-rule-preset-ja-technical-writing": "12.0.2",
+    "@vivliostyle/cli": "11.0.4",
+    "@vivliostyle/vfm": "2.7.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

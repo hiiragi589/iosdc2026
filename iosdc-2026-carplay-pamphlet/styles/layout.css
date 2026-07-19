@@ -1,0 +1,532 @@
+.pamphlet-document {
+  margin: 0;
+}
+
+/* 見開き1枚 = PDF 1ページ (H297×W420mm) */
+.spread {
+  box-sizing: border-box;
+  display: flex;
+  width: 420mm;
+  height: 297mm;
+  overflow: hidden;
+  background: #fff;
+  break-after: page;
+  page-break-after: always;
+}
+
+.spread:last-child {
+  break-after: auto;
+  page-break-after: auto;
+}
+
+.pamphlet-page {
+  box-sizing: border-box;
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  overflow: hidden;
+}
+
+/*
+ * 余白はテンプレート推奨値: 上20mm / 下23mm / ノド22mm / 小口20mm。
+ * 下部17mmはページ番号・著者名・タイトルが主催側で入るため空けておく。
+ * 左ページはノドが右側、右ページはノドが左側。
+ * 本文幅 210-20-22=168mm → 2段組で 79mm + 段間10mm + 79mm。
+ */
+.left-page {
+  padding: 20mm 22mm 23mm 20mm;
+}
+
+.right-page {
+  padding: 20mm 20mm 23mm 22mm;
+}
+
+.page-content {
+  height: 100%;
+  overflow: hidden;
+  column-count: 2;
+  column-gap: 10mm;
+  /* 段の途中で終わる歯抜けを避け、左右の段末を揃える */
+  column-fill: balance;
+  orphans: 2;
+  widows: 2;
+}
+
+.page-content > :first-child {
+  margin-top: 0;
+}
+
+/* 2ページ目は文章量を保ったまま4要素をページ内に収める */
+.pamphlet-page[data-page-number="2"] .page-content {
+  line-height: 13pt;
+}
+
+.keep-paragraph {
+  break-inside: avoid;
+}
+
+/* コード・表・図は段内に収める(先輩記事と同じ読み順を保つ) */
+.page-content pre,
+.page-content table,
+.page-content .diagram,
+.page-content .checklist,
+.page-content .qr-row,
+.page-content .qr-box,
+.page-content .sample-flow,
+.page-content .sample-screenshot-flow,
+.page-content .sample-cta,
+.page-content .author-profile {
+  break-inside: avoid;
+}
+
+/* ページ下部の囲みコラムのみ全幅(先輩記事の下部コラムと同じ扱い) */
+.page-content .column-box {
+  column-span: all;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 7pt;
+  line-height: 1.4;
+  margin: 0 0 3mm;
+}
+
+th,
+td {
+  border: 0.25mm solid var(--rule);
+  padding: 1mm 1.6mm;
+  text-align: left;
+  vertical-align: top;
+}
+
+thead th {
+  background: var(--code-background);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.diagram {
+  display: flex;
+  align-items: stretch;
+  gap: 2mm;
+  margin: 0 0 3mm;
+}
+
+.diagram-box {
+  flex: 1;
+  border: 0.25mm solid var(--rule);
+  border-radius: 1.6mm;
+  background: var(--code-background);
+  padding: 2mm 2.4mm;
+}
+
+.diagram-box h4 {
+  margin: 0 0 1.2mm;
+  font-size: 7.5pt;
+  color: var(--accent);
+}
+
+.diagram-box ul {
+  margin: 0;
+  padding-inline-start: 3.4mm;
+  font-size: 6.8pt;
+  line-height: 1.5;
+}
+
+.diagram-arrow {
+  align-self: center;
+  font-size: 9pt;
+  color: var(--muted-foreground);
+  padding: 0 0.4mm;
+}
+
+.sample-flow-heading,
+.sample-flow,
+.sample-screenshot-flow {
+  column-span: all;
+}
+
+.sample-screenshot-flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2mm;
+  margin: 0 0 2.2mm;
+}
+
+.sample-screenshot {
+  min-width: 0;
+  margin: 0;
+}
+
+.sample-screenshot img {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0.25mm solid var(--rule);
+  border-radius: 1.2mm;
+  background: var(--code-background);
+}
+
+.sample-screenshot figcaption {
+  margin-top: 0.7mm;
+  color: var(--muted-foreground);
+  font-size: 6pt;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.sample-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 2mm;
+  margin: 0 0 2.2mm;
+}
+
+.sample-flow-step {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5mm;
+  border: 0.3mm solid var(--rule);
+  border-radius: 1.6mm;
+  background: var(--code-background);
+  padding: 1.1mm 1.8mm;
+  text-align: center;
+}
+
+.sample-flow-step strong {
+  color: var(--accent);
+  font-size: 7.5pt;
+  line-height: 1.2;
+}
+
+.sample-flow-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.9mm;
+  white-space: nowrap;
+}
+
+.sample-flow-meta code {
+  background: #fff;
+  border: 0.2mm solid var(--rule);
+  font-size: 6.2pt;
+  line-height: 1.25;
+  padding: 0.2mm 0.8mm;
+  white-space: nowrap;
+}
+
+.sample-flow-meta span {
+  color: var(--muted-foreground);
+  font-size: 6.2pt;
+  line-height: 1.2;
+}
+
+.sample-flow-meta span::before {
+  content: "\00b7\00a0";
+}
+
+.sample-flow-arrow {
+  align-self: center;
+  color: var(--muted-foreground);
+  font-size: 9pt;
+}
+
+.column-box {
+  border: 0.3mm solid var(--column-accent);
+  border-radius: 2.4mm;
+  padding: 2.4mm 3.2mm;
+  margin: 1.6mm 0 0;
+  background: var(--column-background);
+}
+
+.column-box-label {
+  font-size: 8.5pt;
+  font-weight: 700;
+  color: var(--column-accent);
+  margin: 0 0 1.4mm;
+}
+
+.column-box p {
+  font-size: 7.6pt;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.column-box p + p {
+  margin-top: 1.2mm;
+}
+
+/* 2ページ目は本文との間隔を確保するため、コラムだけを少し圧縮する */
+.column-box-compact {
+  padding: 1.6mm 3.2mm;
+}
+
+.column-box-compact .column-box-label {
+  margin-bottom: 0.8mm;
+}
+
+.column-box-compact p {
+  line-height: 1.45;
+}
+
+.column-box table {
+  margin-bottom: 0;
+}
+
+.checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 3mm;
+}
+
+.checklist li {
+  font-size: 7.6pt;
+  line-height: 1.6;
+  padding-inline-start: 4.5mm;
+  position: relative;
+}
+
+.checklist li + li {
+  margin-top: 0.8mm;
+}
+
+.checklist li::before {
+  content: "\2610";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+/* ページ最下部に固定する要素(Tips・QR)。本文の段組みから切り離して余白を下端に寄せる */
+.page-bottom {
+  position: absolute;
+  bottom: 23mm;
+}
+
+.left-page .page-bottom {
+  left: 20mm;
+  right: 22mm;
+}
+
+.right-page .page-bottom {
+  left: 22mm;
+  right: 20mm;
+}
+
+/* ページ下部の行: Tips(1カラム幅) + QRエリアを横並びにする */
+.footer-row {
+  display: flex;
+  align-items: stretch;
+  gap: 10mm;
+}
+
+.footer-row > * {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+}
+
+.qr-row {
+  display: flex;
+  gap: 3mm;
+  margin: 2mm 0 0;
+}
+
+/* QR単独でページ下部に置く場合は1段分の幅で小口側に寄せる */
+.left-page .qr-row.page-bottom {
+  right: auto;
+  width: 79mm;
+}
+
+.right-page .qr-row.page-bottom {
+  left: auto;
+  width: 79mm;
+}
+
+/* 筆者紹介と、唯一のQRコードであるGitHubリポジトリへの導線 */
+.right-page .author-profile.page-bottom {
+  left: 22mm;
+  right: 20mm;
+  width: auto;
+  display: grid;
+  grid-template-columns: 12mm 25mm minmax(0, 1fr);
+  align-items: center;
+  gap: 2mm;
+}
+
+.author-profile {
+  min-width: 0;
+  border-top: 0.5mm solid var(--accent);
+  padding-top: 1.5mm;
+}
+
+.author-profile-image {
+  width: 12mm;
+  height: 12mm;
+  margin: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 72% 38%;
+  display: block;
+}
+
+.author-profile-heading {
+  min-width: 0;
+  margin: 0;
+}
+
+.author-profile-label {
+  margin: 0 0 0.4mm;
+  color: var(--muted-foreground);
+  font-size: 6.6pt;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.author-profile-name {
+  margin: 0;
+  color: var(--accent);
+  font-size: 13pt;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.author-profile-description {
+  margin: 0;
+  font-size: 8.5pt;
+  line-height: 1.45;
+}
+
+.author-profile.page-bottom .author-profile-description {
+  line-height: 1.35;
+}
+
+.sample-cta {
+  display: flex;
+  align-items: center;
+  gap: 3mm;
+  border: 0.3mm solid var(--accent);
+  border-radius: 1.6mm;
+  background: var(--code-background);
+  padding: 2mm 2.4mm;
+  margin: 0;
+}
+
+.sample-cta-qr {
+  flex: 0 0 auto;
+  width: 19mm;
+  height: 19mm;
+  object-fit: contain;
+}
+
+.sample-cta-copy {
+  min-width: 0;
+}
+
+.sample-cta-copy p {
+  margin: 0;
+  font-size: 7.4pt;
+  line-height: 1.45;
+}
+
+.sample-cta-title {
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 1mm !important;
+}
+
+/* page-1 は App Category の導入まで収めるため、本文の段落間だけを詰める */
+.pamphlet-page[data-page-number="1"] .page-content > p:not(.subtitle):not(.author-name):not(.lead) {
+  margin-bottom: 2mm;
+}
+
+.pamphlet-page[data-page-number="1"] * + h2 {
+  margin-top: 3.5mm;
+}
+
+.pamphlet-page[data-page-number="1"] * + h3 {
+  margin-top: 2.4mm;
+}
+
+.pamphlet-page[data-page-number="1"] .column-box {
+  padding-block: 1.8mm;
+}
+
+.pamphlet-page[data-page-number="1"] .column-box p:not(.column-box-label) {
+  font-size: 7.6pt;
+  line-height: 1.45;
+}
+
+/* 4要素を扱うpage-2は、下部コラムを避けるため段落間だけをわずかに詰める */
+.pamphlet-page[data-page-number="2"] p,
+.pamphlet-page[data-page-number="2"] ul,
+.pamphlet-page[data-page-number="2"] ol,
+.pamphlet-page[data-page-number="2"] blockquote {
+  margin-bottom: 2.5mm;
+}
+
+.pamphlet-page[data-page-number="2"] * + h3 {
+  margin-top: 2.7mm;
+}
+
+.pamphlet-page[data-page-number="2"] pre {
+  line-height: 1.45;
+  padding-block: 1.8mm;
+}
+
+.qr-box {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 0.4mm dashed var(--rule);
+  border-radius: 1.6mm;
+  padding: 1.2mm;
+  text-align: center;
+}
+
+.qr-placeholder {
+  width: 11mm;
+  height: 11mm;
+  margin: 0 auto 1.2mm;
+  border: 0.25mm solid var(--rule);
+  background: var(--code-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 6pt;
+  color: var(--muted-foreground);
+}
+
+.qr-image {
+  width: 11mm;
+  height: 11mm;
+  margin: 0 auto 0.8mm;
+  display: block;
+  object-fit: contain;
+}
+
+.qr-label {
+  font-size: 7.6pt;
+  font-weight: 700;
+  margin: 0 0 0.6mm;
+}
+
+.qr-caption {
+  font-size: 6.6pt;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+.page-content hr {
+  border: 0;
+  border-top: 0.25mm solid var(--rule);
+  margin: 4mm 0;
+}

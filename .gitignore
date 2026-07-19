@@ -1,0 +1,19 @@
+# macOS and Xcode user-local files
+.DS_Store
+**/xcuserdata/
+**/*.xcuserstate
+**/DerivedData/
+**/build/
+
+# Vivliostyle and Node.js generated files
+iosdc-2026-carplay-pamphlet/node_modules/
+iosdc-2026-carplay-pamphlet/dist/
+iosdc-2026-carplay-pamphlet/.vivliostyle/
+
+# Local secrets and signing material
+.env
+.env.*
+!.env.example
+*.p12
+*.mobileprovision
+*.mobileprovisionprofile

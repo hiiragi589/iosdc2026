@@ -1,0 +1,12 @@
+/* 入稿テンプレート: 見開き2ページ・地色白・塗り足しなしの場合 H297×W420mm */
+@page {
+  size: 420mm 297mm;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff;
+  }
+}
